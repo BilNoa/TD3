@@ -1,22 +1,24 @@
 class Consommateur extends Thread {
     private Bal bal;
 
-    public Consommateur(Bal b) {
-        this.bal = b;
+    public Consommateur(Bal bal) {
+        this.bal = bal;
     }
 
     @Override
     public void run() {
-        int i = 1;
-        while (i <= 5) { // consomme 5 lettres
-            String message = bal.retirer();
-            System.out.println("Consommateur a lu : " + message);
-            try {
-                sleep(1500); // simulation du temps de lecture
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
+        try {
+            while (true) {
+                String message = bal.retirer();
+                if (message != null) {
+                    System.out.println("Consommateur a lu : " + message);
+                } else {
+                    System.out.println("Consommateur n'a rien à lire !");
+                }
+                sleep(1500);
             }
-            i++;
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
     }
 }
